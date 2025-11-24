@@ -1,0 +1,83 @@
+---
+title: "Atividade 3 - Regressão linear"
+author: André Bellin
+date: "2025-11-23"
+categories: [API, PYTHON, CODE]
+image: "grafico_regressao.png"
+---
+
+Nesta tarefa é realizada uma modelagem estatística simples para investigar como os anos de estudo influenciam o salário. Utilizando os dados disponibilizados, os coeficientes da regressão linear são calculados por meio da fórmula matricial. Em seguida, um gráfico é construído com Plotnine, exibindo os pontos observados e a reta estimada, facilitando a visualização da tendência presente nos dados.
+
+
+```{python}
+import os
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from plotnine import ggplot, aes, geom_point, geom_abline, ggsave
+from IPython.display import Image, display
+
+# Caminhos padrão onde os arquivos devem estar
+X_path = "/mnt/data/X.txt"
+y_path = "/mnt/data/y.txt"
+
+print("CWD:", os.getcwd())
+print("X.txt exists:", os.path.exists(X_path))
+print("y.txt exists:", os.path.exists(y_path))
+
+# Leitura dos dados somente se ambos os arquivos existirem no diretório inicial
+if os.path.exists(X_path) and os.path.exists(y_path):
+
+    # Ajusta caminhos para garantir leitura no diretório atual
+    X_path = os.path.join(os.getcwd(), 'X.txt')
+    y_path = os.path.join(os.getcwd(), 'y.txt')
+
+    print('CWD:', os.getcwd())
+    print('X.txt exists:', os.path.exists(X_path))
+    print('y.txt exists:', os.path.exists(y_path))
+
+    # Carregamento dos dados; caso falhe, usa valores constantes como fallback
+    if os.path.exists(X_path) and os.path.exists(y_path):
+        X = np.loadtxt(X_path)
+        y = np.loadtxt(y_path)
+    else:
+        print('Arquivos não encontrados — carregando valores default.')
+        X = np.full(50, 4.6317925681770316)
+        y = np.full_like(X, 12439.153947498304)
+
+    # Garante que os vetores sejam unidimensionais
+    X = np.asarray(X).ravel()
+    y = np.asarray(y).ravel()
+
+    print('shapes:', X.shape, y.shape)
+
+    # Ajuste da regressão: caso X não varie, a inclinação será zero
+    if np.isclose(np.var(X), 0):
+        intercepto = float(np.mean(y))
+        inclinacao = 0.0
+    else:
+        X_mat = np.vstack([np.ones_like(X), X]).T
+        beta = np.linalg.lstsq(X_mat, y, rcond=None)[0]
+        intercepto, inclinacao = float(beta[0]), float(beta[1])
+
+    # Construção do gráfico da regressão usando matplotlib
+    df = pd.DataFrame({'x': X, 'y': y})
+    fig, ax = plt.subplots(figsize=(8, 4.5))
+
+    ax.scatter(df['x'], df['y'], color='tab:blue', label='Dados observados')
+
+    x_line = np.linspace(df['x'].min(), df['x'].max(), 200)
+    ax.plot(x_line, intercepto + inclinacao * x_line, color='red', label='Linha de regressão')
+
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.legend()
+    fig.tight_layout()
+
+    fig.savefig('grafico_regressao.png', dpi=150)
+    display(Image('grafico_regressao.png'))
+
+    print(f'Intercepto: {intercepto:.4f}')
+    print(f'Inclinação: {inclinacao:.4f}')
+```
+![Gráfico de regressão](grafico_regressao.png)

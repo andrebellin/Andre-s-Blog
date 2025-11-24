@@ -1,0 +1,23 @@
+{
+  "index.qmd": {
+    "index.html": "4caf47ce"
+  },
+  "about.qmd": {
+    "about.html": "4170b287"
+  },
+  "posts/post-with-code/index.qmd": {
+    "index.html": "52ddc638"
+  },
+  "posts/welcome/index.qmd": {
+    "index.html": "8da955ae"
+  },
+  "posts/onibus/index.qmd": {
+    "index.html": "bafe5af6"
+  },
+  "posts/lenear/index.qmd": {
+    "index.html": "89d8ce12"
+  },
+  "posts/Dolar/index.qmd": {
+    "index.html": "7d6dbea5"
+  }
+}

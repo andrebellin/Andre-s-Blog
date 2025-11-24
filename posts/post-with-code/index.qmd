@@ -1,0 +1,80 @@
+---
+title:  "Atividae 1 - Cotação Dolar"
+author: "André Bellin"
+date: "2025-11-23"
+categories: [JSON, PYTHON, CODE]
+image: "dolar.jpg"
+---
+
+Nesta atividade será desenvolvida uma aplicação capaz de consultar e analisar a variação diária do dólar dentro de um mês específico. A partir de um código no formato ‘MMYYYY’, o programa identifica o intervalo completo do mês, acessa a API do Banco Central e recupera as cotações correspondentes. Também é realizado o tratamento de dias sem registro, ajustando valores com base na última cotação disponível. Ao final, os dados são apresentados em um gráfico interativo de linha construído com Plotly.
+
+```{python}
+import pandas as pd
+import requests
+import calendar
+from datetime import datetime
+import plotly.express as px
+
+def cotacao_dolar_periodo(mmyyyy: str):
+    """
+    Recebe uma string no formato 'MMYYYY' e retorna
+    um gráfico de linha com as cotações diárias do dólar PTAX.
+    """
+
+    # Converte a string recebida para o primeiro dia do mês
+    first_date = datetime.strptime(mmyyyy, "%m%Y")
+
+    # Descobre automaticamente o último dia do mês informado
+    last_date = first_date.replace(
+        day=calendar.monthrange(first_date.year, first_date.month)[1]
+    )
+
+    # Formata datas no padrão aceito pela API PTAX (mm-dd-yyyy)
+    data_ini = first_date.strftime("%m-%d-%Y")
+    data_fim = last_date.strftime("%m-%d-%Y")
+
+    # Monta a URL do serviço PTAX para consulta de cotações no período
+    url = (
+        "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/"
+        "CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)"
+        f"?@dataInicial='{data_ini}'&@dataFinalCotacao='{data_fim}'"
+        "&$top=100&$format=json"
+    )
+
+    # Faz a requisição à API e extrai a lista de registros do JSON
+    response = requests.get(url)
+    dados = response.json()["value"]
+
+    # Constrói DataFrame e extrai somente data, compra e venda
+    df = pd.DataFrame(dados)
+    df["data"] = pd.to_datetime(df["dataHoraCotacao"]).dt.date
+    df = df[["data", "cotacaoCompra", "cotacaoVenda"]]
+
+    # Remove múltiplas cotações do mesmo dia, fazendo a média
+    df = df.groupby("data").mean().reset_index()
+    df = df.sort_values("data")
+
+    # Recria o índice com todas as datas do mês e preenche lacunas com forward-fill
+    idx = pd.date_range(start=first_date, end=last_date)
+    df = df.set_index("data").reindex(idx)
+    df = df.fillna(method="ffill")
+    df.index.name = "data"
+    df = df.reset_index()
+
+    # Gera o gráfico de linha com Plotly
+    fig = px.line(
+        df,
+        x="data",
+        y="cotacaoVenda",
+        title=f"Cotação do Dólar {mmyyyy[:2]}/{mmyyyy[2:]}",
+        labels={"cotacaoVenda": "Cotação (Venda)", "data": "Data"}
+    )
+
+    fig.update_layout(yaxis_tickformat=".2f")
+    return fig
+
+# Executando para sua data 07/2016
+cotacao_dolar_periodo("072016")
+
+
+```

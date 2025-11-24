@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_7e6dba561b29f253bf1c42a900b251dc {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_7e6dba561b29f253bf1c42a900b251dc" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_7e6dba561b29f253bf1c42a900b251dc = L.map(
+                "map_7e6dba561b29f253bf1c42a900b251dc",
+                {
+                    center: [-23.53055075, -46.6650365],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 14,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_d6ed0d3215f91e7def27fc085feae3bc = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_d6ed0d3215f91e7def27fc085feae3bc.addTo(map_7e6dba561b29f253bf1c42a900b251dc);
+        
+    
+            var marker_ac1c748f40cabad2da5f8f0413b679d5 = L.marker(
+                [-23.534564, -46.654302],
+                {
+}
+            ).addTo(map_7e6dba561b29f253bf1c42a900b251dc);
+        
+    
+        var popup_eac8dc3771f5e151f64b364235a96ade = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_40de497589a2d6f9b1b08d8c14c46938 = $(`<div id="html_40de497589a2d6f9b1b08d8c14c46938" style="width: 100.0%; height: 100.0%;">ANGELICA B/C AV ANGELICA</div>`)[0];
+                popup_eac8dc3771f5e151f64b364235a96ade.setContent(html_40de497589a2d6f9b1b08d8c14c46938);
+            
+        
+
+        marker_ac1c748f40cabad2da5f8f0413b679d5.bindPopup(popup_eac8dc3771f5e151f64b364235a96ade)
+        ;
+
+        
+    
+    
+            var marker_426d1df1f64e59f4f077905d23fab06f = L.marker(
+                [-23.525799, -46.679251],
+                {
+}
+            ).addTo(map_7e6dba561b29f253bf1c42a900b251dc);
+        
+    
+        var popup_af86e7e8c9d6c7b2ef44331bc3857422 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ea41fda7d223701901dee47b64ddfe5b = $(`<div id="html_ea41fda7d223701901dee47b64ddfe5b" style="width: 100.0%; height: 100.0%;">PARADA PALMEIRAS B/C R PADRE ANTONIO TOMAS</div>`)[0];
+                popup_af86e7e8c9d6c7b2ef44331bc3857422.setContent(html_ea41fda7d223701901dee47b64ddfe5b);
+            
+        
+
+        marker_426d1df1f64e59f4f077905d23fab06f.bindPopup(popup_af86e7e8c9d6c7b2ef44331bc3857422)
+        ;
+
+        
+    
+    
+            var marker_cbff2212aff152010c38a1e8c8d658e8 = L.marker(
+                [-23.526523, -46.673588],
+                {
+}
+            ).addTo(map_7e6dba561b29f253bf1c42a900b251dc);
+        
+    
+        var popup_2ebd0e15cfa98a94b666477afaa65567 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ec7058e57f9889aceeeedd14bb6f1664 = $(`<div id="html_ec7058e57f9889aceeeedd14bb6f1664" style="width: 100.0%; height: 100.0%;">ANTARTICA B/C PC SOUSA ARANHA</div>`)[0];
+                popup_2ebd0e15cfa98a94b666477afaa65567.setContent(html_ec7058e57f9889aceeeedd14bb6f1664);
+            
+        
+
+        marker_cbff2212aff152010c38a1e8c8d658e8.bindPopup(popup_2ebd0e15cfa98a94b666477afaa65567)
+        ;
+
+        
+    
+    
+            var marker_a47fbe046a4ded22c980194f2254aff4 = L.marker(
+                [-23.535317, -46.653005],
+                {
+}
+            ).addTo(map_7e6dba561b29f253bf1c42a900b251dc);
+        
+    
+        var popup_aebce29fb47376d0b419bbb9c5021310 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_de61d6ac6c0680fa7e0255bc1dcb7f2f = $(`<div id="html_de61d6ac6c0680fa7e0255bc1dcb7f2f" style="width: 100.0%; height: 100.0%;">PARADA D R EXEMPLO</div>`)[0];
+                popup_aebce29fb47376d0b419bbb9c5021310.setContent(html_de61d6ac6c0680fa7e0255bc1dcb7f2f);
+            
+        
+
+        marker_a47fbe046a4ded22c980194f2254aff4.bindPopup(popup_aebce29fb47376d0b419bbb9c5021310)
+        ;
+
+        
+    
+    
+            var circle_marker_a5bef1671f4b2d60e511f1e9b3e33d58 = L.circleMarker(
+                [-23.53531725, -46.653005],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_7e6dba561b29f253bf1c42a900b251dc);
+        
+    
+        var popup_575e8d5c846323c15e3a78e9f12a1ab9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a6e98674165ef89294953ce12881f09b = $(`<div id="html_a6e98674165ef89294953ce12881f09b" style="width: 100.0%; height: 100.0%;">Veículo: 12783 Horário: 2024-09-27T01:05:47Z</div>`)[0];
+                popup_575e8d5c846323c15e3a78e9f12a1ab9.setContent(html_a6e98674165ef89294953ce12881f09b);
+            
+        
+
+        circle_marker_a5bef1671f4b2d60e511f1e9b3e33d58.bindPopup(popup_575e8d5c846323c15e3a78e9f12a1ab9)
+        ;
+
+        
+    
+    
+            var circle_marker_8e43dda9f5539f5e90d6c39f6b643675 = L.circleMarker(
+                [-23.547649, -46.6410115],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_7e6dba561b29f253bf1c42a900b251dc);
+        
+    
+        var popup_45eedaa173e65bf1c3400057411e0a4b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_00440920dddbf4b0dc67c93b0e8651ec = $(`<div id="html_00440920dddbf4b0dc67c93b0e8651ec" style="width: 100.0%; height: 100.0%;">Veículo: 12534 Horário: 2024-09-27T01:06:10Z</div>`)[0];
+                popup_45eedaa173e65bf1c3400057411e0a4b.setContent(html_00440920dddbf4b0dc67c93b0e8651ec);
+            
+        
+
+        circle_marker_8e43dda9f5539f5e90d6c39f6b643675.bindPopup(popup_45eedaa173e65bf1c3400057411e0a4b)
+        ;
+
+        
+    
+</script>
+</html>

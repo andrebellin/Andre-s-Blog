@@ -1,0 +1,127 @@
+---
+title: "Atividade 2 - Monitoramento de Frota de Ônibus"
+author: André Bellin
+date: "2025-11-23"
+categories: [API, PYTHON, CODE]
+image: "onibuscmtc-gestaocovas.jpg"
+---
+
+O objetivo desta atividade é implementar uma ferramenta visual para acompanhar em tempo real o funcionamento de uma linha de ônibus. O sistema busca, via API, tanto as paradas fixas quanto as posições atualizadas dos veículos. Com essas informações, é gerado um mapa interativo que destaca cada tipo de ponto com marcadores de cores diferentes, permitindo identificar facilmente o trajeto oficial e a movimentação atual da frota.
+
+```{python}
+# Versão robusta: utiliza o token SPTRANS_TOKEN caso exista; se não houver, usa dados locais para demonstração.
+import os
+import requests
+from dotenv import load_dotenv
+from IPython.display import HTML, display
+import folium
+import math
+
+load_dotenv()
+token = os.getenv("SPTRANS_TOKEN")
+
+s = requests.Session()
+
+# Conjunto de dados fictícios utilizado quando o token não estiver disponível ou a API falhar
+demo_paradas = [
+    {"cp": 7014417, "np": "ANGELICA B/C", "ed": "AV ANGELICA", "py": -23.534564, "px": -46.654302},
+    {"cp": 60016784, "np": "PARADA PALMEIRAS B/C", "ed": "R PADRE ANTONIO TOMAS", "py": -23.525799, "px": -46.679251},
+    {"cp": 60016786, "np": "ANTARTICA B/C", "ed": "PC SOUSA ARANHA", "py": -23.526523, "px": -46.673588},
+    {"cp": 12783, "np": "PARADA D", "ed": "R EXEMPLO", "py": -23.535317, "px": -46.653005},
+]
+
+demo_pos = [
+    {"p": "12783", "ta": "2024-09-27T01:05:47Z", "py": -23.53531725, "px": -46.653005},
+    {"p": "12534", "ta": "2024-09-27T01:06:10Z", "py": -23.547649, "px": -46.6410115},
+]
+
+def fetch_paradas_pos(codigo_linha=2506):
+    """
+    Obtém as paradas e posições dos veículos da linha desejada.
+    - Se o token estiver disponível e a API responder corretamente, usa dados reais.
+    - Caso contrário, retorna os dados de demonstração pré-definidos.
+    """
+    if not token:
+        print("SPTRANS_TOKEN ausente — carregando dados de demonstração.")
+        return demo_paradas, demo_pos
+
+    try:
+        # Autenticação junto à API (algumas versões usam GET ou POST; aqui mantemos POST como padrão)
+        auth = s.post(
+            f"https://api.olhovivo.sptrans.com.br/v2.1/Login/Autenticar?token={token}", timeout=10
+        )
+        print("Resposta do login:", auth.text)
+
+        # Requisição das paradas da linha informada
+        r_par = s.get(
+            f"https://api.olhovivo.sptrans.com.br/v2.1/Parada/BuscarParadasPorLinha?codigoLinha={codigo_linha}",
+            timeout=10
+        )
+        paradas = r_par.json()
+
+        # Requisição da posição dos veículos
+        r_pos = s.get(
+            f"https://api.olhovivo.sptrans.com.br/v2.1/Posicao/Linha?codigoLinha={codigo_linha}",
+            timeout=10
+        )
+        pos_json = r_pos.json()
+        pos_list = pos_json.get("vs") if isinstance(pos_json, dict) else []
+
+        # Se a API retornar lista vazia, usar dados fictícios
+        if not paradas:
+            print("Nenhuma parada retornada pela API — usando dados de demonstração.")
+            return demo_paradas, demo_pos
+
+        return paradas, pos_list
+
+    except Exception as e:
+        print("Falha ao acessar a API Olho Vivo:", e)
+        print("Utilizando dados de demonstração.")
+        return demo_paradas, demo_pos
+
+
+# Carrega paradas e veículos (da API ou demo)
+paradas, pos_list = fetch_paradas_pos(codigo_linha=2506)
+print(f"Quantidade carregada: {len(paradas)} paradas, {len(pos_list)} veículos.")
+
+# Função para calcular o ponto médio das coordenadas — usado como centro do mapa
+def mean_center(points):
+    lat = [p["py"] for p in points]
+    lon = [p["px"] for p in points]
+    return (sum(lat) / len(lat), sum(lon) / len(lon))
+
+# Caso não existam paradas (situação rara), define um centro padrão
+center = mean_center(paradas) if paradas else (-23.534564, -46.654302)
+
+# Criação do mapa com Folium
+m = folium.Map(location=center, zoom_start=14)
+
+# Marca cada parada como um marcador simples
+for p in paradas:
+    folium.Marker(
+        location=[p["py"], p["px"]],
+        popup=f"{p.get('np')}\n{p.get('ed','')}"
+    ).add_to(m)
+
+# Marca veículos da linha usando círculos vermelhos (se existirem)
+for v in pos_list:
+    try:
+        folium.CircleMarker(
+            location=[v["py"], v["px"]],
+            radius=6,
+            color="red",
+            fill=True,
+            fill_opacity=0.8,
+            popup=f"Veículo: {v.get('p')}\nHorário: {v.get('ta')}"
+        ).add_to(m)
+    except Exception:
+        pass
+
+# Salva o arquivo HTML do mapa
+output = "paradas_linha_2506.html"
+m.save(output)
+print(f"Arquivo gerado: {output}")
+
+# Exibe o mapa diretamente no Quarto
+display(HTML(m._repr_html_()))
+```
